@@ -26,7 +26,10 @@ sh 'mvn checkstyle:checkstyle'
 def publishReports(){
 
 recordIssues(tools: [checkStyle()])
-
+jacoco buildOverBuild: true, changeBuildStatus: true, runAlways: true, skipCopyOfSrcFiles: true
+publishCoverage adapters: [coberturaAdapter('')], sourceFileResolver: sourceFiles('NEVER_STORE')
+recordIssues(tools: [pmdParser()])
+  
 }
 
 
@@ -35,4 +38,3 @@ def cleanup(){
 cleanWs()
 
 }
-
