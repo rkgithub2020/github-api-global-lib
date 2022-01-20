@@ -1,11 +1,38 @@
 #!/usr/bin/env groovy
 
-import org.apache.commons.lang.StringUtils
-ines (5 sloc)  226 Bytes
-  
-def clone(String branch_name,String Url) {
-  echo "$branch_name"
-  echo "$Url"
-  git 'https://github.com/rkgithub2020/spring3hibernate-1.git'
-  
+def compile(){
+
+echo "We are going to compile the pacakge"
+sh 'mvn clean compile'
 }
+
+def testing(){
+echo "We are going to test the package"
+
+// below command will check code stability.
+echo "Checking code stability"
+sh 'mvn pmd:pmd'
+
+// below command will check code coverage.
+echo "Checking code coverage"
+sh 'mvn cobertura:cobertura'
+
+// below command will check quality
+echo "Checking code quality"
+sh 'mvn checkstyle:checkstyle'
+
+}
+
+def publishReports(){
+
+recordIssues(tools: [checkStyle()])
+
+}
+
+
+def cleanup(){
+
+cleanWs()
+
+}
+
